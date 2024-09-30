@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
 
 const PageContainer = styled.div`
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 `;
@@ -16,46 +14,36 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const HotelGrid = styled.div`
+const Form = styled.form`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 `;
 
-const HotelCard = styled.div`
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const HotelImage = styled.img`
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-`;
-
-const HotelInfo = styled.div`
-  padding: 15px;
-`;
-
-const HotelName = styled.h3`
-  margin: 0 0 10px 0;
-  color: #003580;
-`;
-
-const HotelPrice = styled.p`
+const Label = styled.label`
+  margin-bottom: 5px;
   font-weight: bold;
-  color: #008009;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const Select = styled.select`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 `;
 
 const Button = styled.button`
   padding: 10px 20px;
-  background-color: #0071c2;
+  background-color: #003580;
   color: white;
   border: none;
   border-radius: 4px;
@@ -64,143 +52,92 @@ const Button = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #005999;
-  }
-  
-  &::before {
-    content: "🛒 "; /* เพิ่มอิโมจิในปุ่ม */
+    background-color: #00224f;
   }
 `;
 
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: #0071c2;
+function BookingPage() {
+  const { id } = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const selectedDate = searchParams.get('date');
 
-  &:hover {
-    color: #005999;
-  }
+  const [hotel, setHotel] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    checkIn: selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : '',
+    checkOut: '',
+    guests: '1',
+    roomType: 'standard',
+  });
 
-  &::before {
-    content: "← "; /* สัญลักษณ์ลูกศรย้อนกลับ */
-  }
-`;
+  useEffect(() => {
+    // Fetch hotel data based on the ID
+    // For now, we'll use mock data
+    const mockHotel = {
+      id: 1,
+      name: 'The Nai Harn Phuket',
+      price: 8000,
+    };
+    setHotel(mockHotel);
+  }, [id]);
 
-const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 100%;
-  position: relative;
-`;
-
-const hotels = [
-  { 
-    id: 1, 
-    name: 'The Nai Harn Phuket', 
-    price: 8000, 
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  },
-  { 
-    id: 2, 
-    name: 'Rayavadee Krabi', 
-    price: 15000, 
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  },
-  { 
-    id: 3, 
-    name: 'Banyan Tree Samui', 
-    price: 25000, 
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  },
-  { 
-    id: 4, 
-    name: 'Sri Panwa Phuket', 
-    price: 30000, 
-    image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  },
-  { 
-    id: 5, 
-    name: 'Anantara Hua Hin Resort', 
-    price: 12000, 
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  },
-  { 
-    id: 6, 
-    name: 'Aonang Villa Resort', 
-    price: 5000, 
-    image: 'https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  },
-];
-
-function HotelsPage() {
-  const [selectedHotel, setSelectedHotel] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const openModal = (hotel) => {
-    setSelectedHotel(hotel);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Booking submitted:', { ...formData, hotelId: id });
+    // Here you would typically send the data to your backend
   };
 
-  const closeModal = () => {
-    setSelectedHotel(null);
-  };
+  if (!hotel) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <PageContainer>
-      <Title>โรงแรมยอดนิยมในภาคใต้</Title>
-      <HotelGrid>
-        {hotels.map((hotel) => (
-          <HotelCard key={hotel.id}>
-            <HotelImage src={hotel.image} alt={hotel.name} />
-            <HotelInfo>
-              <HotelName>{hotel.name}</HotelName>
-              <HotelPrice>฿{hotel.price.toLocaleString()} / คืน</HotelPrice>
-              <Button onClick={() => openModal(hotel)}>ดูราคาและจอง</Button>
-            </HotelInfo>
-          </HotelCard>
-        ))}
-      </HotelGrid>
-      {selectedHotel && (
-        <Modal>
-          <ModalContent>
-            <BackButton onClick={closeModal} />
-            <h2>{selectedHotel.name}</h2>
-            <Calendar
-              onChange={handleDateChange}
-              value={selectedDate}
-              minDate={new Date()}
-            />
-            <p>ราคาสำหรับวันที่ {selectedDate.toLocaleDateString()}: ฿{selectedHotel.price.toLocaleString()}</p>
-            <Link to={`/booking/${selectedHotel.id}?date=${selectedDate.toISOString()}`}>
-              <Button>จองเลย</Button>
-            </Link>
-          </ModalContent>
-        </Modal>
-      )}
+      <Title>จองห้องพัก - {hotel.name}</Title>
+      <Form onSubmit={handleSubmit}>
+        <InputGroup>
+          <Label htmlFor="name">ชื่อ-นามสกุล</Label>
+          <Input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+        </InputGroup>
+        <InputGroup>
+          <Label htmlFor="email">อีเมล</Label>
+          <Input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+        </InputGroup>
+        <InputGroup>
+          <Label htmlFor="checkIn">วันที่เช็คอิน</Label>
+          <Input type="date" id="checkIn" name="checkIn" value={formData.checkIn} onChange={handleChange} required />
+        </InputGroup>
+        <InputGroup>
+          <Label htmlFor="checkOut">วันที่เช็คเอาท์</Label>
+          <Input type="date" id="checkOut" name="checkOut" value={formData.checkOut} onChange={handleChange} required />
+        </InputGroup>
+        <InputGroup>
+          <Label htmlFor="guests">จำนวนผู้เข้าพัก</Label>
+          <Select id="guests" name="guests" value={formData.guests} onChange={handleChange}>
+            {[1, 2, 3, 4].map(num => (
+              <option key={num} value={num}>{num} ท่าน</option>
+            ))}
+          </Select>
+        </InputGroup>
+        <InputGroup>
+          <Label htmlFor="roomType">ประเภทห้องพัก</Label>
+          <Select id="roomType" name="roomType" value={formData.roomType} onChange={handleChange}>
+            <option value="standard">ห้องมาตรฐาน</option>
+            <option value="deluxe">ห้องดีลักซ์</option>
+            <option value="suite">ห้องสวีท</option>
+          </Select>
+        </InputGroup>
+        <p>ราคา: ฿{hotel.price.toLocaleString()} / คืน</p>
+        <Button type="submit">ยืนยันการจอง</Button>
+      </Form>
     </PageContainer>
   );
 }
 
-export default HotelsPage;
+export default BookingPage;
