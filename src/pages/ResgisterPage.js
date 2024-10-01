@@ -1,6 +1,25 @@
 import React, { useState } from 'react';
 import { Container, Typography, TextField, Button, Box } from '@mui/material';
+import { styled } from '@mui/system';
 import axios from 'axios';
+
+// สร้าง class ให้กับ Container ที่ใช้สำหรับออกแบบใหม่
+const StyledContainer = styled(Container)`
+  background-color: #f0f4f8;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 5rem auto;
+`;
+
+const StyledButton = styled(Button)`
+  background-color: #0071c2;
+  color: #fff;
+  &:hover {
+    background-color: #005999;
+  }
+`;
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -26,9 +45,12 @@ const RegisterPage = () => {
 
   return (
     <>
-      <Container maxWidth="sm" style={{ marginTop: '2rem', marginBottom: '2rem' }}>
-        <Typography variant="h4" gutterBottom>
+      <StyledContainer>
+        <Typography variant="h4" gutterBottom align="center" style={{ color: '#003580' }}>
           Create an Account
+        </Typography>
+        <Typography variant="body1" align="center" gutterBottom style={{ color: '#555' }}>
+          Join us today! Fill in the form below to get started.
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -42,6 +64,8 @@ const RegisterPage = () => {
             autoFocus
             value={formData.username}
             onChange={handleChange}
+            variant="outlined"
+            sx={{ marginBottom: '1.5rem' }}
           />
           <TextField
             margin="normal"
@@ -53,6 +77,8 @@ const RegisterPage = () => {
             autoComplete="email"
             value={formData.email}
             onChange={handleChange}
+            variant="outlined"
+            sx={{ marginBottom: '1.5rem' }}
           />
           <TextField
             margin="normal"
@@ -65,17 +91,19 @@ const RegisterPage = () => {
             autoComplete="new-password"
             value={formData.password}
             onChange={handleChange}
+            variant="outlined"
+            sx={{ marginBottom: '1.5rem' }}
           />
-          <Button
+          <StyledButton
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, py: 1.5 }}
           >
             Register
-          </Button>
+          </StyledButton>
         </Box>
-      </Container>
+      </StyledContainer>
     </>
   );
 };

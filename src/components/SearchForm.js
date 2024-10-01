@@ -3,16 +3,20 @@ import { Paper, TextField, Button, Grid, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { useNavigate } from 'react-router-dom';
 
-const SearchForm = ({ onSearch }) => {
+const SearchForm = () => {
   const [destination, setDestination] = useState('');
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
   const [guests, setGuests] = useState(1);
 
+  const navigate = useNavigate(); // ใช้สำหรับการนำทาง
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch({ destination, checkIn, checkOut, guests });
+    // ส่งค่าที่ค้นหาไปยัง HotelsPage
+    navigate(`/hotels?destination=${destination}`);
   };
 
   return (

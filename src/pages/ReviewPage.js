@@ -5,12 +5,16 @@ const PageContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #ffffff; // เพิ่มพื้นหลังให้กับหน้า
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // เพิ่มเงาให้กับกล่อง
+  border-radius: 8px; // มุมโค้ง
 `;
 
 const Title = styled.h1`
   color: #003580;
-  font-size: 28px;
+  font-size: 32px; // ขนาดฟอนต์เพิ่มขึ้น
   margin-bottom: 20px;
+  text-align: center; // จัดกลาง
 `;
 
 const ReviewList = styled.div`
@@ -23,6 +27,12 @@ const ReviewCard = styled.div`
   border-radius: 8px;
   padding: 15px;
   background-color: #f8f8f8;
+  margin-top: 10px; // เพิ่มระยะห่างด้านบน
+  transition: transform 0.2s; // เพิ่มการเคลื่อนไหวเมื่อชี้เมาส์
+
+  &:hover {
+    transform: scale(1.02); // ขยายเมื่อชี้เมาส์
+  }
 `;
 
 const ReviewHeader = styled.div`
@@ -34,10 +44,12 @@ const ReviewHeader = styled.div`
 const ReviewerName = styled.h3`
   margin: 0;
   color: #003580;
+  font-weight: bold; // ตัวหนา
 `;
 
 const ReviewDate = styled.span`
   color: #666;
+  font-size: 14px; // ขนาดฟอนต์เล็กลง
 `;
 
 const ReviewRating = styled.div`
@@ -49,6 +61,7 @@ const ReviewRating = styled.div`
 const ReviewText = styled.p`
   margin: 0;
   color: #333;
+  line-height: 1.5; // ระยะห่างระหว่างบรรทัด
 `;
 
 const Form = styled.form`
@@ -61,6 +74,13 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px; // ขนาดฟอนต์
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #003580; // เปลี่ยนสีกรอบเมื่อชี้
+    outline: none; // ไม่แสดงกรอบการเลือก
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -68,6 +88,12 @@ const Textarea = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
+  font-size: 16px;
+
+  &:focus {
+    border-color: #003580;
+    outline: none;
+  }
 `;
 
 const Button = styled.button`
@@ -78,10 +104,11 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 
   &:hover {
     background-color: #00224f;
+    transform: translateY(-2px); // เลื่อนขึ้นเล็กน้อยเมื่อชี้
   }
 `;
 
